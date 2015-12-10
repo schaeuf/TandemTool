@@ -16,4 +16,4 @@ Dipko läuft auf Windows/MacOS/Linux.
    gestartet werden.
 
 ## Lizenz
-Dipko ist freie Software. Dipko ist lizenziert unter der [LICENSE][General Public License Version 3].
+Dipko ist freie Software. Dipko ist lizenziert unter der [LICENSE](https://github.com/schaeuf/dipko/blob/master/LICENSE) General Public License Version 3].
