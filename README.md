@@ -1,5 +1,7 @@
 # Digitale Prüfungskoordination (Dipko)
 
+![Screenshot](https://github.com/schaeuf/dipko/blob/master/docs/bildschirmfoto-1.png)
+
 Dipko ist eine grafische Anwendung zur Koordination von Prüfungsjobs
 innerhalb einer Arbeitsgruppe. Prüfungsjobs werden so auf Tandems von
 Prüfern aufgeteilt, daß die Prüfungen pro Prüfer proportional zu Lehr-SWS
