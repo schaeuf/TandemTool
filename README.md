@@ -14,3 +14,6 @@ Dipko läuft auf Windows/MacOS/Linux.
 1. Herunterladen der aktuellen Version dipko.jar.
 2. dipko kann direkt aus dem Dateimanager durch Anklicken von dipko.jar
    gestartet werden.
+
+## Lizenz
+Dipko ist freie Software. Dipko ist lizenziert unter der [LICENSE][General Public License Version 3].
