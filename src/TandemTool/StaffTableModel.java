@@ -1,0 +1,130 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package TandemTool;
+
+import java.util.ArrayList;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+
+/**
+ *
+ * @author schaeuf
+ */
+public class StaffTableModel extends AbstractTableModel {
+    //public ArrayList<TableModelListener> listeners = new ArrayList<>();
+    Staff staff;
+    StaffTableModel(Staff s){
+        staff = s;
+    }
+    
+    @Override
+    public int getRowCount() {
+        return staff.members.size();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return 5;
+    }
+
+    @Override
+    public String getColumnName(int columnIndex) {
+        switch (columnIndex){
+            case 0: return "Name";
+            case 1: return "SWS";
+            case 2: return "Form";
+            case 3: return "Soll-Jobs";
+            case 4: return "Haben-Jobs";
+            default: return "N.N.";
+        }
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex){
+            case 0: return java.lang.String.class;
+            case 1: return java.lang.Integer.class;
+            case 2: return java.lang.String.class;
+            case 3: return java.lang.Float.class;
+            case 4: return java.lang.Integer.class;
+            default: return Object.class;
+        }        
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int col) {
+           switch (col){
+            case 0: return true;
+            case 1: return true;
+            case 2: return true;
+            default: return false;
+        }        
+    }
+
+    @Override
+    public Object getValueAt(int row, int col) {        
+        Staff.Employee emp;
+        emp = staff.members.get(row);
+           switch (col){
+            case 0: return emp.getName();
+            case 1: return emp.getSws();
+            case 2: {
+                switch(emp.getForm()){
+                    case MUENDLICH : return "mündlich";
+                    case  SCHRIFTLICH: return "schriftlich";
+                    default: return "beides";
+                }
+            }
+            case 3: return emp.sollJobCount();
+            case 4: return emp.getJobs();
+            default: return null;
+        }        
+        
+    }
+
+    @Override
+    public void setValueAt(Object arg0, int row, int col) {
+        Staff.Employee emp;
+        System.out.print(arg0);
+        emp = staff.members.get(row);
+           switch (col){
+            case 0: emp.setName((String) arg0);break;
+            case 1: emp.setSws((Integer) arg0);break;
+            case 2:
+                if (((String) arg0).equals("schriftlich"))
+                        emp.setForm(Staff.Pruefungsform.SCHRIFTLICH);
+                else{
+                    if (((String) arg0).equals("mündlich"))
+                        emp.setForm(Staff.Pruefungsform.MUENDLICH);
+                    else
+                        emp.setForm(Staff.Pruefungsform.BEIDES);}
+                
+        }
+        fireTableCellUpdated(row,col);
+    }
+
+    void remove() {
+        staff.remove();
+        fireTableRowsDeleted(staff.membersCount(),staff.membersCount());
+        
+    }
+
+    void add() {
+        staff.add();
+        fireTableRowsInserted(staff.membersCount()-1,staff.membersCount()-1);
+    }
+
+    void setGesamtPruefungenS(int i) {
+        staff.setGesamtPruefungenS(i);
+    }
+}
+    
+  
+    
+    
+  
