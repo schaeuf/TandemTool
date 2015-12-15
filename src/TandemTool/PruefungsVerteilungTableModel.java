@@ -18,28 +18,29 @@
  */
 package TandemTool;
 
-import java.util.ArrayList;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author schaeuf
  */
-public class PruefungsVerteilungTableModel extends PruefungsVerteilung
-    implements TableModel
+public class PruefungsVerteilungTableModel extends AbstractTableModel
+    
     
 {
-    ArrayList<TableModelListener> listeners;
+    final PruefungsVerteilung pruefungsVerteilung;
+    final Staff staff;
 
-    public PruefungsVerteilungTableModel(Staff s) {
-        super(s);
-        listeners = new ArrayList<>();
+    public PruefungsVerteilungTableModel(Staff s, PruefungsVerteilung p) {
+        staff = s;
+        pruefungsVerteilung = p;
     }
+
 
     @Override
     public int getRowCount() {
-        return tandems.size();
+        return pruefungsVerteilung.getCount();
     }
 
     @Override
@@ -76,8 +77,8 @@ public class PruefungsVerteilungTableModel extends PruefungsVerteilung
 
     @Override
     public Object getValueAt(int row, int col) {
-        Tandem tandem;
-        tandem = tandems.get(row);
+        PruefungsVerteilung.Tandem tandem;
+        tandem = pruefungsVerteilung.getTandem(row);
            switch (col){
             case 0: return tandem.getPrf1().getName();
             case 1: return tandem.getPrf2().getName();
@@ -93,19 +94,13 @@ public class PruefungsVerteilungTableModel extends PruefungsVerteilung
         }        
     }
 
-    @Override
+  /*  @Override
     public void setValueAt(Object arg0, int arg1, int arg2) {
         throw new UnsupportedOperationException("Not supported."); //To change body of generated methods, choose Tools | Templates.
     }
+*/
+  
 
-    @Override
-    public void addTableModelListener(TableModelListener l) {
-        listeners.add(l);
-    }
-
-    @Override
-    public void removeTableModelListener(TableModelListener l) {
-        listeners.remove(l);
-    }
+  
     
 }

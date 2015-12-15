@@ -39,7 +39,7 @@ import javax.swing.table.TableColumn;
  * @author schaeuf
  */
 public class TandemGUI extends javax.swing.JFrame
-    implements javax.swing.event.TableModelListener, javax.swing.event.ChangeListener
+    implements javax.swing.event.TableModelListener
     {
 
     /**
@@ -48,10 +48,10 @@ public class TandemGUI extends javax.swing.JFrame
     public TandemGUI() {
         staff = new Staff();
         staffTableModel = new StaffTableModel(staff);
+        pruefungsVerteilung = new PruefungsVerteilung(staff);   
+        pruefungsVerteilungTableModel = new PruefungsVerteilungTableModel(staff,pruefungsVerteilung);
         
-        pruefungen = new PruefungsVerteilungTableModel(staff);
-        
-        status = new Status(staff,pruefungen);
+        status = new Status(staff,pruefungsVerteilung);
         initComponents();
         TableColumn sportColumn = jTable1.getColumnModel().getColumn(2);
 
@@ -107,6 +107,12 @@ public class TandemGUI extends javax.swing.JFrame
 
         jSpinner1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jSpinner1.setMinimumSize(new java.awt.Dimension(60, 20));
+        jSpinner1.addChangeListener(status);
+        jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                pruefungenSchriftlichSpinnerChanged(evt);
+            }
+        });
 
         jTable1.setModel(staffTableModel);
         jTable1.setMinimumSize(new java.awt.Dimension(60, 30));
@@ -130,6 +136,13 @@ public class TandemGUI extends javax.swing.JFrame
         jLabel5.setText("Schriftlich:");
 
         jLabel6.setText("Mündlich:");
+
+        jSpinner2.addChangeListener(status);
+        jSpinner2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                pruefungenMuendlichSpinnerChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -174,18 +187,16 @@ public class TandemGUI extends javax.swing.JFrame
                 .addContainerGap())
         );
 
-        jSpinner1.addChangeListener(status);
-        jSpinner1.addChangeListener(this);
-
         jSplitPane2.setLeftComponent(jPanel2);
 
         jPanel3.setToolTipText("Tandems");
 
-        jTable2.setModel(pruefungen);
+        jTable2.setModel(pruefungsVerteilungTableModel);
         jScrollPane2.setViewportView(jTable2);
         jTable1.getModel().addTableModelListener(this);
 
         jButton3.setText("+");
+        jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -323,6 +334,20 @@ public class TandemGUI extends javax.swing.JFrame
         tandemDialog.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void pruefungenMuendlichSpinnerChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pruefungenMuendlichSpinnerChanged
+        // TODO add your handling code here:
+        javax.swing.SpinnerModel model;
+        model = ((javax.swing.JSpinner) evt.getSource()).getModel();
+        staff.setGesamtPruefungenM((Integer) model.getValue());        
+    }//GEN-LAST:event_pruefungenMuendlichSpinnerChanged
+
+    private void pruefungenSchriftlichSpinnerChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pruefungenSchriftlichSpinnerChanged
+           
+         javax.swing.SpinnerModel model;
+        model = ((javax.swing.JSpinner) evt.getSource()).getModel();
+        staff.setGesamtPruefungenS((Integer) model.getValue());        
+    }//GEN-LAST:event_pruefungenSchriftlichSpinnerChanged
+
     /**
      * @param args the command line arguments
      */
@@ -390,7 +415,8 @@ public class TandemGUI extends javax.swing.JFrame
     private final Staff staff;
     private final StaffTableModel staffTableModel;
     
-    private PruefungsVerteilungTableModel pruefungen;
+    private PruefungsVerteilung pruefungsVerteilung;
+    private PruefungsVerteilungTableModel pruefungsVerteilungTableModel;
     private Status status;
     private TandemDialog tandemDialog;
     
@@ -485,10 +511,5 @@ public class TandemGUI extends javax.swing.JFrame
         }
     }
 
-    @Override
-    public void stateChanged(ChangeEvent e) {
-        javax.swing.SpinnerModel model;
-        model = ((javax.swing.JSpinner) e.getSource()).getModel();
-        staffTableModel.setGesamtPruefungenS((Integer) model.getValue());
-    }
+
 }

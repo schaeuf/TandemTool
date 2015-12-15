@@ -40,8 +40,13 @@ public class Staff {
         private String name;
         private int sws = 0;
         private int jobs = 0;
-        private Pruefungsform form = Pruefungsform.SCHRIFTLICH;
+        private Pruefungsform form = Pruefungsform.BEIDES;
 
+        Employee(){}
+        
+        Employee(String s){
+           name = s;
+        }
         
         public void setForm(Pruefungsform f){
             form=f;
@@ -70,7 +75,11 @@ public class Staff {
         }
         
         public float sollJobCount(){
-            return (gesamtPruefungenS+gesamtPruefungenM==0)?(float)0:sws/gesamtSws*(gesamtPruefungenS+gesamtPruefungenM);
+            if(getGesamtPruefungenS()+getGesamtPruefungenM()==0)
+                return 0;
+            if(gesamtSws==0)
+                return 0;
+            return sws/gesamtSws*(gesamtPruefungenS+gesamtPruefungenM);
         }
         
         public void incJobs(int i){
@@ -97,7 +106,7 @@ public class Staff {
     }
     
     protected void add(){
-        members.add(new Employee());
+        members.add(new Employee("N.N."));
     }
     
     protected void remove(){

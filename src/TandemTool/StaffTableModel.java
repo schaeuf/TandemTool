@@ -107,7 +107,11 @@ public class StaffTableModel extends AbstractTableModel {
         emp = staff.members.get(row);
            switch (col){
             case 0: emp.setName((String) arg0);break;
-            case 1: emp.setSws((Integer) arg0);break;
+            case 1: {
+                emp.setSws((Integer) arg0);
+                fireTableRowsUpdated(3,3);
+                break;
+                }
             case 2:
                 if (((String) arg0).equals("schriftlich"))
                         emp.setForm(Staff.Pruefungsform.SCHRIFTLICH);
@@ -132,9 +136,7 @@ public class StaffTableModel extends AbstractTableModel {
         fireTableRowsInserted(staff.membersCount()-1,staff.membersCount()-1);
     }
 
-    void setGesamtPruefungenS(int i) {
-        staff.setGesamtPruefungenS(i);
-    }
+   
 }
     
   

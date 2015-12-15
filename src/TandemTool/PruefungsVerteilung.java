@@ -54,12 +54,20 @@ public class PruefungsVerteilung {
         public Staff.Pruefungsform getForm(){
             return form;
         }
-        
-        
+            
     }
     
     PruefungsVerteilung(Staff s){
         staff = s;
         tandems=new ArrayList<>();
+    }
+    
+    
+    public Tandem getTandem(int index){
+        return tandems.get(index);
+    }
+    
+    public int getCount(){
+        return tandems.size();
     }
 }
