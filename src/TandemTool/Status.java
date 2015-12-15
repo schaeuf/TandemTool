@@ -33,7 +33,7 @@ public class Status extends JLabel implements ChangeListener, TableModelListener
     private final PruefungsVerteilung pruefungen;
     
     private String text(){
-        return "Jobs: " + ((Integer) staff.JobsCountM() + staff.JobsCountS())  ;
+        return "Jobs: " + ((Integer) staff.sollJobsM()+ staff.sollJobsS())  ;
     }
     
     Status(Staff s, PruefungsVerteilung p){
