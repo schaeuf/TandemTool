@@ -342,8 +342,8 @@ public class TandemGUI extends javax.swing.JFrame
     }//GEN-LAST:event_pruefungenMuendlichSpinnerChanged
 
     private void pruefungenSchriftlichSpinnerChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pruefungenSchriftlichSpinnerChanged
-           
-         javax.swing.SpinnerModel model;
+   
+        javax.swing.SpinnerModel model;
         model = ((javax.swing.JSpinner) evt.getSource()).getModel();
         staff.setGesamtPruefungenS((Integer) model.getValue());        
     }//GEN-LAST:event_pruefungenSchriftlichSpinnerChanged
@@ -503,8 +503,13 @@ public class TandemGUI extends javax.swing.JFrame
     
     @Override
     public void tableChanged(TableModelEvent e) {
-        if (e.getColumn() == 1 || e.getColumn()== javax.swing.event.TableModelEvent.ALL_COLUMNS)
-//            recalculate();
+    
+        
+        if (e.getColumn() == 1 || e.getColumn()== javax.swing.event.TableModelEvent.ALL_COLUMNS){
+            pruefungsVerteilung.update();
+            TableModelEvent ev = new TableModelEvent(jTable2.getModel());
+            jTable2.tableChanged(ev);}
+        else
         if (e.getColumn() == 0){
             TableModelEvent ev = new TableModelEvent(jTable2.getModel());
             jTable2.tableChanged(ev);
