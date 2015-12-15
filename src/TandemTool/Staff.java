@@ -19,6 +19,7 @@
 package TandemTool;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -75,16 +76,21 @@ public class Staff {
         }
         
         public float sollJobCount(){
-            if(getGesamtPruefungenS()+getGesamtPruefungenM()==0)
+            if((getGesamtPruefungenS()+getGesamtPruefungenM())==0)
                 return 0;
-            if(gesamtSws==0)
+            if(getGesamtSws()==0)
                 return 0;
-            return sws/gesamtSws*(gesamtPruefungenS+gesamtPruefungenM);
+            return (float) 2*sws/gesamtSws  *(gesamtPruefungenS+gesamtPruefungenM);
         }
         
         public void incJobs(int i){
             jobs += i;
         }
+        
+        public void resetJobs(){
+            jobs = 0;
+        }
+                
         
         public int getJobs(){
             return jobs;
@@ -122,7 +128,7 @@ public class Staff {
         return gesamtPruefungenS;
     }
     
-    public int JobsCountS(){
+    public int sollJobsS(){
         return gesamtPruefungenS*2;
         
     }
@@ -135,9 +141,40 @@ public class Staff {
         return gesamtPruefungenM;
     }
     
-    public int JobsCountM(){
+    public int sollJobsM(){
         return gesamtPruefungenM*2;
+                
+    }
+    
+    public Employee[] EmployeesMostOpenJobs(Pruefungsform form){
+        Employee first=null,second=null;
+        for (Employee e : members)
+            if (e.getForm()==form||e.getForm()==Pruefungsform.BEIDES){
+               if (first == null)
+                   first = e;
+               else{
+                   if(second == null)
+                      second = e;
+                   else{
+                      if(e.sollJobCount()>first.sollJobCount()){
+                        second=first;
+                        first=e;
+                      }
+                      else{
+                        if(e.sollJobCount()>second.sollJobCount())
+                            second=e;
+                      }
+                   }
+               }
+            }
         
-        
+        if (second==null)
+            return null;
+        return new Employee[] {first,second};
+    }
+    
+    public void resetJobCounts(){
+        for(Employee e: members)
+            e.resetJobs();
     }
 }
