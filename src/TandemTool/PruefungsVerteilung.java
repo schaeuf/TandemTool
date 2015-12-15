@@ -27,6 +27,8 @@ import java.util.ArrayList;
 public class PruefungsVerteilung {
     private final Staff staff;
     ArrayList<Tandem> tandems;
+    int jobCountM;
+    int jobCountS;
     
     public class Tandem{
         final Staff.Employee prf1, prf2;
@@ -69,5 +71,45 @@ public class PruefungsVerteilung {
     
     public int getCount(){
         return tandems.size();
+    }
+    
+    public void update(){
+        jobCountM=0;
+        jobCountS=0;
+        tandems.clear();
+        staff.resetJobCounts();
+        Staff.Employee topJobber[];
+        int maxJobs;
+
+        // mündlich
+        topJobber = staff.EmployeesMostOpenJobs(Staff.Pruefungsform.MUENDLICH);              
+        while(
+                topJobber != null &&
+                jobCountM+1 < staff.sollJobsM() &&
+                (topJobber[1].sollJobCount()>=1)){           
+           maxJobs = (int) topJobber[1].sollJobCount();
+           tandems.add(new Tandem(topJobber[0],topJobber[1],Staff.Pruefungsform.MUENDLICH, maxJobs));
+           topJobber[0].incJobs(maxJobs);
+           topJobber[1].incJobs(maxJobs);
+           jobCountM+=maxJobs;
+           topJobber = staff.EmployeesMostOpenJobs(Staff.Pruefungsform.MUENDLICH); 
+        }
+        
+        
+        
+        // schriftlich
+        
+        topJobber = staff.EmployeesMostOpenJobs(Staff.Pruefungsform.SCHRIFTLICH);              
+        while(
+                topJobber != null &&
+                jobCountM+1 < staff.sollJobsM() &&
+                (topJobber[1].sollJobCount()>=1)){           
+           maxJobs = (int) topJobber[1].sollJobCount();
+           tandems.add(new Tandem(topJobber[0],topJobber[1],Staff.Pruefungsform.SCHRIFTLICH, maxJobs));
+           topJobber[0].incJobs(maxJobs);
+           topJobber[1].incJobs(maxJobs);
+           jobCountM+=maxJobs;
+           topJobber = staff.EmployeesMostOpenJobs(Staff.Pruefungsform.SCHRIFTLICH); 
+        }
     }
 }
